@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>10th Class – Hasnain Ali</title>
+<style>
+  :root{
+    --primary:#2476d3;
+    --primary-light: #d4e5ff;
+    --bg:#f0f7ff;
+    --card:#fff;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --green:#22c55e;
+    --green-dark:#16a34a;
+    --red:#ef4444;
+    --amber:#f59e0b;
+    --purple:#8b5cf6;
+    --border:#dbe2ea;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height:1.6;
+    background-image: 
+      radial-gradient(#d4e5ff 1px, transparent 1px),
+      radial-gradient(#d4e5ff 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+  }
+  header{
+    background:var(--primary);
+    color:#fff;
+    text-align:center;
+    padding:18px;
+    font-size:26px;
+    font-weight:800;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    position:relative;
+    overflow:hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--primary), var(--purple));
+  }
+  .wrap{
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(16,24,40,.08);
+    padding:20px;
+    border:1px solid var(--border);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(16,24,40,.12);
+  }
+  .card h2{
+    margin:0 0 15px;
+    font-size:20px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--primary-light);
+  }
+  .full{grid-column:1/-1}
+  .half{grid-column:span 1}
+  .muted{color:var(--muted);font-size:14px}
+  #clock{
+    font-size:38px;
+    font-weight:800;
+    color:var(--primary);
+    text-align:center;
+    padding:10px;
+    background:var(--primary-light);
+    border-radius:12px;
+  }
+  .timer{
+    font-size:42px;
+    font-weight:800;
+    letter-spacing:.5px;
+    margin:10px 0 15px;
+    text-align:center;
+    color:var(--primary);
+  }
+  .btn{
+    border:0;
+    border-radius:12px;
+    padding:12px 18px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .btn.start{background:var(--green);color:#fff}
+  .btn.start:hover{background:var(--green-dark);transform:translateY(-2px)}
+  .btn.pause{background:var(--amber);color:#111}
+  .btn.pause:hover{background:#e69008;transform:translateY(-2px)}
+  .btn.reset{background:var(--red);color:#fff}
+  .btn.reset:hover{background:#dc2626;transform:translateY(-2px)}
+  .btn.small{font-size:12px;padding:8px 12px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  ul.clean{list-style:none;margin:0;padding:0}
+  li.item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f1f5f9;
+    border:1px solid #e2e8f0;
+    padding:12px 15px;
+    border-radius:12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  li.item:hover {
+    background: #e6f0ff;
+    border-color: #c5d9f8;
+  }
+  li.item.done{
+    background:#dcfce7;
+    border-color:#86efac;
+    color:#064e3b;
+    text-decoration:line-through;
+  }
+  .x{
+    margin-left:auto;
+    background:transparent;
+    border:none;
+    color:var(--red);
+    font-weight:900;
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    padding:4px;
+    border-radius:4px;
+  }
+  .x:hover {
+    background: #fee2e2;
+  }
+  .input-row{display:flex;gap:10px}
+  .input-row input, .input-row select {
+    flex:1;
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:12px;
+    font-family:inherit;
+  }
+  details{
+    border:1px solid #e2e8f0;
+    border-radius:14px;
+    background:#f8fafc;
+    margin:12px 0;
+    overflow:hidden;
+  }
+  summary{
+    list-style:none;
+    cursor:pointer;
+    padding:15px 18px;
+    font-weight:800;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--primary-light);
+  }
+  summary::-webkit-details-marker{display:none}
+  .chapters{padding:12px 18px;border-top:1px solid #e2e8f0;list-style:none;margin:0}
+  .progress-wrapper{background:#e2e8f0;border-radius:12px;height:16px;margin:8px 0}
+  .progress-bar{height:100%;border-radius:12px;background:var(--primary);transition:width 0.3s ease}
+  .alarm-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    padding:10px 12px;
+    border-radius:12px;
+    margin:8px 0;
+  }
+  .banner{
+    margin-top:12px;
+    padding:12px;
+    border-radius:12px;
+    background:#fef3c7;
+    border:1px solid #fde68a;
+    color:#92400e;
+    font-weight:700;
+    text-align:center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .banner.hidden {
+    display: none;
+  }
+  .banner-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #92400e;
+  }
+  textarea{
+    width:100%;
+    min-height:120px;
+    border:1px solid #cbd5e1;
+    border-radius:12px;
+    padding:12px;
+    font-family:inherit;
+    resize:vertical;
+  }
+  .links a{
+    display:inline-block;
+    margin:8px 12px 0 0;
+    color:var(--primary);
+    font-weight:700;
+    text-decoration:none;
+    padding:6px 0;
+    border-bottom:2px solid transparent;
+    transition:all 0.2s ease;
+  }
+  .links a:hover{
+    text-decoration:none;
+    border-bottom:2px solid var(--primary);
+  }
+  
+  /* Syllabus specific styles */
+  .syllabus-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 12px 15px;
+    border-radius: 12px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .syllabus-item:hover {
+    background: #e6f0ff;
+    border-color: #c5d9f8;
+  }
+  .syllabus-item.done {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #064e3b;
+  }
+  .subject-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .progress-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid #2476d3;
+    transition: all 0.3s ease;
+  }
+  
+  /* Quick Links Styles */
+  .quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  .quick-link-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .quick-link-item:hover {
+    background: #eef3f9;
+    border-color: #cbd5e1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  }
+  .link-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+  .link-text {
+    flex: 1;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  
+  /* E-Books Styles */
+  .ebooks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  .ebook-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .ebook-item:hover {
+    background: #eef3f9;
+    border-color: #cbd5e1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  }
+  .ebook-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: var(--purple);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+  .ebook-text {
+    flex: 1;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 15px;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    color: var(--muted);
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    background: var(--card);
+  }
+  
+  /* Reset button in syllabus */
+  .subject-reset {
+    margin-top: 12px;
+    text-align: right;
+  }
+  
+  /* Pomodoro counter */
+  .pomodoro-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 10px;
+  }
+  .pomodoro-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    transition: all 0.3s ease;
+  }
+  .pomodoro-dot.completed {
+    background: var(--green);
+    border-color: var(--green-dark);
+    transform: scale(1.2);
+  }
+  #pomoCount {
+    font-weight: 700;
+    color: var(--primary);
+  }
+  
+  /* Game section */
+  .game-container {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 16px;
+    border: 2px solid #bae6fd;
+  }
+  .game-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 14px 28px;
+    background: var(--purple);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  }
+  .game-button:hover {
+    background: #7c3aed;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+  }
+  
+  /* Book decoration */
+  .book-decoration {
+    font-size: 24px;
+  }
+
+  /* Reset all button */
+  .reset-all-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 28px;
+    transition: all 0.3s ease;
+    padding: 8px;
+    border-radius: 50%;
+  }
+  .reset-all-btn:hover {
+    transform: rotate(15deg) scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Voice input button */
+  .voice-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .voice-btn:hover {
+    background: #7c3aed;
+    transform: scale(1.05);
+  }
+  .voice-btn.listening {
+    background: var(--red);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  /* Calculator styles */
+  .calculator {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+  }
+  .calc-display {
+    width: 100%;
+    padding: 15px;
+    font-size: 24px;
+    text-align: right;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: white;
+    font-family: monospace;
+  }
+  .calc-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .calc-btn {
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .calc-btn:hover {
+    background: #f1f5f9;
+  }
+  .calc-btn.operator {
+    background: var(--primary-light);
+    font-weight: bold;
+  }
+  .calc-btn.equals {
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+  }
+  .calc-btn.clear {
+    background: var(--red);
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Quran section */
+  .quran-container {
+    text-align: center;
+    padding: 20px;
+  }
+  .quran-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 14px 28px;
+    background: var(--green);
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  }
+  .quran-button:hover {
+    background: var(--green-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 900px) {
+    .wrap {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .wrap {
+      grid-template-columns: 1fr;
+    }
+    .card h2 {
+      font-size: 18px;
+    }
+    header {
+      font-size: 20px;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  10th Class – Hasnain Ali
+  <button class="reset-all-btn" title="Reset All Progress">📚</button>
+</header>
+<div class="wrap">
+
+<!-- Clock -->
+<section class="card half">
+<h2>🕒 Clock</h2>
+<div id="clock">00:00:00</div>
+</section>
+
+<!-- Pomodoro -->
+<section class="card half">
+<h2>🍅 Pomodoro Timer</h2>
+<div id="pStatus" class="muted">Focus Session (45 min)</div>
+<div id="pTime" class="timer">45:00</div>
+<div class="row">
+<button id="pStart" class="btn start">Start</button>
+<button id="pPause" class="btn pause">Pause</button>
+<button id="pReset" class="btn reset">Reset</button>
+</div>
+<div class="pomodoro-counter">
+  <div class="pomodoro-dot" id="pomo1"></div>
+  <div class="pomodoro-dot" id="pomo2"></div>
+  <div class="pomodoro-dot" id="pomo3"></div>
+  <span id="pomoCount">Completed: 0</span>
+</div>
+<div class="muted">Long break after 3 sessions</div>
+</section>
+
+<!-- Memo Notepad link -->
+<section class="card half">
+<h2>📝 Memo Notepad</h2>
+<div class="links">
+<a href="https://www.memonotepad.com/" target="_blank">Open Memo Notepad</a>
+</div>
+</section>
+
+<!-- PGC Portal link -->
+<section class="card half">
+<h2>🔗 PGC Prep Portal</h2>
+<div class="links">
+<a href="https://prep.pgc.edu/" target="_blank">Open PGC Portal</a>
+</div>
+</section>
+
+<!-- Sticky Notes -->
+<section class="card half">
+<h2>📝 Sticky Notes</h2>
+<div class="input-row">
+<textarea id="notes" placeholder="Write quick notes, formulas, reminders…"></textarea>
+<button id="notesVoiceBtn" class="voice-btn" title="Voice Input">🎤</button>
+</div>
+<div class="muted">Auto-saves to your browser.</div>
+</section>
+
+<!-- To-Do List -->
+<section class="card half">
+<h2>✅ To-Do List</h2>
+<div class="input-row">
+<input type="text" id="todoInput" placeholder="Add a task">
+<button id="addTodo" class="btn start">Add</button>
+<button id="todoVoiceBtn" class="voice-btn" title="Voice Input">🎤</button>
+</div>
+<ul id="todoList" class="clean"></ul>
+<div id="todoScore" class="muted" style="margin-top:8px;font-weight:700"></div>
+</section>
+
+<!-- Study Alarms -->
+<section class="card half">
+<h2>🔔 Study Alarms</h2>
+<div class="row">
+<input type="time" id="alarmTime">
+<select id="alarmTone">
+<option value="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">Alarm Clock</option>
+<option value="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">Beep</option>
+<option value="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" selected>Study Tone</option>
+</select>
+<button id="addAlarm" class="btn start">Add Alarm</button>
+</div>
+<div id="alarmBanner" class="banner hidden">
+  <span>⏰ Alarm! Time to Study!</span>
+  <button class="banner-close">✕</button>
+</div>
+<div id="alarms"></div>
+</section>
+
+<!-- Scientific Calculator -->
+<section class="card half">
+<h2>🧮 Scientific Calculator</h2>
+<div class="calculator">
+  <input type="text" class="calc-display" id="calcDisplay" readonly>
+  <div class="calc-buttons">
+    <button class="calc-btn clear" onclick="clearCalc()">C</button>
+    <button class="calc-btn" onclick="calcBackspace()">⌫</button>
+    <button class="calc-btn operator" onclick="appendToCalc('%')">%</button>
+    <button class="calc-btn operator" onclick="appendToCalc('/')">/</button>
+    
+    <button class="calc-btn" onclick="appendToCalc('7')">7</button>
+    <button class="calc-btn" onclick="appendToCalc('8')">8</button>
+    <button class="calc-btn" onclick="appendToCalc('9')">9</button>
+    <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+    
+    <button class="calc-btn" onclick="appendToCalc('4')">4</button>
+    <button class="calc-btn" onclick="appendToCalc('5')">5</button>
+    <button class="calc-btn" onclick="appendToCalc('6')">6</button>
+    <button class="calc-btn operator" onclick="appendToCalc('-')">-</button>
+    
+    <button class="calc-btn" onclick="appendToCalc('1')">1</button>
+    <button class="calc-btn" onclick="appendToCalc('2')">2</button>
+    <button class="calc-btn" onclick="appendToCalc('3')">3</button>
+    <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+    
+    <button class="calc-btn" onclick="appendToCalc('0')">0</button>
+    <button class="calc-btn" onclick="appendToCalc('.')">.</button>
+    <button class="calc-btn" onclick="appendToCalc('(')">(</button>
+    <button class="calc-btn" onclick="appendToCalc(')')">)</button>
+    
+    <button class="calc-btn operator" onclick="calculateSin()">sin</button>
+    <button class="calc-btn operator" onclick="calculateCos()">cos</button>
+    <button class="calc-btn operator" onclick="calculateTan()">tan</button>
+    <button class="calc-btn equals" onclick="calculateResult()">=</button>
+  </div>
+</div>
+</section>
+
+<!-- Quran Section -->
+<section class="card half">
+<h2>📖 Quran</h2>
+<div class="quran-container">
+  <p>Read the Holy Quran online with this comprehensive digital version.</p>
+  <a href="https://quran-online.ca/pdf-quran-chapters.html" target="_blank" class="quran-button">
+    Read Quran Online
+  </a>
+  <p class="muted" style="margin-top:12px;">Complete Quran with translations and tafsir</p>
+</div>
+</section>
+
+<!-- Quick Links -->
+<section class="card full">
+<h2>🔗 Quick Links</h2>
+<div class="quick-links-grid">
+  <a href="https://www.tiktok.com/@hasnain_farooqabadi" target="_blank" class="quick-link-item">
+    <div class="link-number">1</div>
+    <div class="link-text">Hasnain TikTok - hasnain_farooqabadi</div>
+  </a>
+  <a href="https://www.biselahore.com/" target="_blank" class="quick-link-item">
+    <div class="link-number">2</div>
+    <div class="link-text">BISE Lahore - Board of Intermediate & Secondary Education</div>
+  </a>
+  <a href="https://www.youtube.com/c/MUSHAHIDALIZAFAR" target="_blank" class="quick-link-item">
+    <div class="link-number">3</div>
+    <div class="link-text">MUSHAHID ALI ZAFAR MATHS</div>
+  </a>
+  <a href="https://www.youtube.com/@easyChemistry910-NI" target="_blank" class="quick-link-item">
+    <div class="link-number">4</div>
+    <div class="link-text">SIR NAVEEAD IQBAL - Easy Chemistry</div>
+  </a>
+</div>
+</section>
+
+<!-- E-Books -->
+<section class="card full">
+<h2>📚 E-Books</h2>
+<div class="ebooks-grid">
+  <a href="https://drive.google.com/file/d/1Yib_jUDbPHilf1PuZrNuwsOFjz2TQ-DJ/view?pli=1" target="_blank" class="ebook-item">
+    <div class="ebook-number">1</div>
+    <div class="ebook-text">CHEMISTRY - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1fXE5n7zlq51OicTRmTobj84aIHQirbSy/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">2</div>
+    <div class="ebook-text">PHYSICS - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1c_VDPgAMX_h2nUBdhttYQb7foCXVi_wN/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">3</div>
+    <div class="ebook-text">MATHS - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1EgiBkLzFkUVde7t_Fat93UGv04-f9G9f/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">4</div>
+    <div class="ebook-text">COMPUTER - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1_VjOfRidtGhYN7rHt0zLiFqrFFt2SQWZ/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">5</div>
+    <div class="ebook-text">BIOLOGY - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/124qa1sdfNPiT0e9_-TguoqkzWBGINH_d/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">6</div>
+    <div class="ebook-text">ENGLISH - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1gbgAixAogcd9DAebNOPyHApmlJbFHehE/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">7</div>
+    <div class="ebook-text">URDU - 10th Class Textbook</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1q7lAkhwLq49ZXwU3vKDC3XvI3mxMEjzl/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">8</div>
+    <div class="ebook-text">TARJMA TUL QURAN - 10th Class Textbook</div>
+  </a>
+</div>
+</section>
+
+<!-- Electric Key Books -->
+<section class="card full">
+<h2>🔑 Electric Key Books [E/KEY BOOKS FOR ALL SUBJECTS]</h2>
+<div class="ebooks-grid">
+  <a href="https://www.ustad360.com/10th-class-biology-notes-pdf-short-long-mcqs/" target="_blank" class="ebook-item">
+    <div class="ebook-number">1</div>
+    <div class="ebook-text">BIOLOGY - Key Notes & MCQs</div>
+  </a>
+  <a href="https://www.ustad360.com/10th-chemistry-notes-short-long-mcqs-exercises/" target="_blank" class="ebook-item">
+    <div class="ebook-number">2</div>
+    <div class="ebook-text">CHEMISTRY - Key Notes & MCQs</div>
+  </a>
+  <a href="https://www.ustad360.com/10th-class-physics-notes-numerical-mcqs-sqs-lqs/" target="_blank" class="ebook-item">
+    <div class="ebook-number">3</div>
+    <div class="ebook-text">PHYSICS - Key Notes & MCQs</div>
+  </a>
+  <a href="https://www.ustad360.com/10th-maths-notes-all-chapters-exercises-mcqs/" target="_blank" class="ebook-item">
+    <div class="ebook-number">4</div>
+    <div class="ebook-text">MATHS - Key Notes & MCQs</div>
+  </a>
+  <a href="https://drive.google.com/file/d/1EgiBkLzFkUVde7t_Fat93UGv04-f9G9f/view" target="_blank" class="ebook-item">
+    <div class="ebook-number">5</div>
+    <div class="ebook-text">COMPUTER - Key Notes & MCQs</div>
+  </a>
+  <a href="https://www.ustad360.com/10th-english-notes-pdf-translation-sqs-grammar/" target="_blank" class="ebook-item">
+    <div class="ebook-number">6</div>
+    <div class="ebook-text">ENGLISH - Key Notes & Grammar</div>
+  </a>
+  <a href="https://www.ustad360.com/10th-urdu-notes-pdf-lessons-nazam-ghazal/" target="_blank" class="ebook-item">
+    <div class="ebook-number">7</div>
+    <div class="ebook-text">URDU - Key Notes & Lessons</div>
+  </a>
+  <a href="https://www.ustad360.com/10th-class-tarjuma-tul-quran-notes-all-chapters-pdf-punjab/" target="_blank" class="ebook-item">
+    <div class="ebook-number">8</div>
+    <div class="ebook-text">TARJMA TUL QURAN - Key Notes</div>
+  </a>
+  <a href="https://www.taleem360.com/9th-and-10th-class-urdu-qawaid-o-insha-text-book-by-punjab-board-vfq" target="_blank" class="ebook-item">
+    <div class="ebook-number">9</div>
+    <div class="ebook-text">URDU QAWAID-O-INSHA - Textbook</div>
+  </a>
+</div>
+</section>
+
+<!-- Syllabus Planner -->
+<section class="card full">
+<h2>📘 Syllabus Planner</h2>
+<div id="syllabus"></div>
+</section>
+
+<!-- Hasnain Run Game -->
+<section class="card full">
+<h2>🎮 Hasnain Run Game</h2>
+<div class="game-container">
+  <p>Take a break and play this fun running game! Control Hasnain as he runs through obstacles.</p>
+  <p class="muted" style="color: var(--red); font-weight: 700;">⚠️ Note: This game works best on computers and laptops with keyboard controls.</p>
+  <a href="https://output.jsbin.com/bovoqeyira" target="_blank" class="game-button">Play Hasnain Run</a>
+  <p class="muted" style="margin-top:12px;">Use arrow keys to control the character</p>
+</div>
+</section>
+
+</div>
+
+<footer>
+  <p>© 2025 Hasnain Ali - 10th Class Study Planner. All rights reserved.</p>
+  <p class="muted">Privacy Note: Your data is stored locally in your browser and is not shared with any third parties.</p>
+</footer>
+
+<!-- Audio elements -->
+<audio id="toneStart" src="https://actions.google.com/sounds/v1/cartoon/cartoon_bing.ogg"></audio>
+<audio id="tonePause" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="toneReset" src="https://actions.google.com/sounds/v1/cartoon/concussive_whistle.ogg"></audio>
+<audio id="toneAlarm"></audio>
+
+<script>
+/* ===== Utilities & Persistence ===== */
+const $ = sel => document.querySelector(sel);
+const save = (k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const load = (k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+function setMaxVolume(){ ['#toneStart','#tonePause','#toneReset','#toneAlarm'].forEach(id=>{ const el=$(id); if(el){ el.volume=1.0; } }); }
+
+/* ===== Reset All Functionality ===== */
+function resetAllProgress() {
+  if (confirm("Are you sure you want to reset ALL progress? This will clear your to-do list, notes, syllabus progress, and alarms.")) {
+    // Clear all stored data
+    localStorage.removeItem('notes');
+    localStorage.removeItem('todos');
+    localStorage.removeItem('syllabusState');
+    localStorage.removeItem('alarms');
+    localStorage.removeItem('pomodoroCount');
+    localStorage.removeItem('completedPomodoros');
+    
+    // Reset variables
+    todos = [];
+    alarms = [];
+    syllabusState = {};
+    pomodoroCount = 0;
+    completedPomodoros = 0;
+    
+    // Reset UI
+    $("#notes").value = '';
+    renderTodos();
+    renderAlarms();
+    renderSyllabus();
+    updatePomodoroCounter();
+    
+    // Reset Pomodoro timer
+    resetPom();
+    
+    alert("All progress has been reset successfully!");
+  }
+}
+
+// Add event listener to reset button
+document.querySelector('.reset-all-btn').addEventListener('click', resetAllProgress);
+
+/* ===== Clock ===== */
+function tickClock(){ $("#clock").textContent = new Date().toLocaleTimeString(); }
+setInterval(tickClock,1000); tickClock();
+
+/* ===== Pomodoro ===== */
+let pSeconds=45*60, pRunning=false, pBreak=false, pTimer=null;
+let pomodoroCount = load('pomodoroCount', 0);
+let completedPomodoros = load('completedPomodoros', 0);
+
+function updatePomodoroCounter() {
+  $("#pomoCount").textContent = `Completed: ${completedPomodoros}`;
+  
+  // Update dots
+  for (let i = 1; i <= 3; i++) {
+    const dot = $(`#pomo${i}`);
+    if (dot) {
+      if (i <= pomodoroCount) {
+        dot.classList.add('completed');
+      } else {
+        dot.classList.remove('completed');
+      }
+    }
+  }
+}
+
+function renderPom(){ 
+  const m=String(Math.floor(pSeconds/60)).padStart(2,'0'); 
+  const s=String(pSeconds%60).padStart(2,'0'); 
+  $("#pTime").textContent = `${m}:${s}`; 
+  
+  if (pBreak) {
+    $("#pStatus").textContent = pomodoroCount === 3 ? "Long Break (25 min)" : "Short Break (15 min)";
+  } else {
+    $("#pStatus").textContent = "Focus Session (45 min)";
+  }
+}
+
+function pomTick(){ 
+  if(pSeconds>0){ 
+    pSeconds--; 
+    renderPom(); 
+    return; 
+  } 
+  
+  playAlarm($("#alarmTone").value); 
+  showBanner(); 
+  clearInterval(pTimer); 
+  pTimer=null; 
+  pRunning=false; 
+  
+  if(!pBreak){ 
+    // Focus session completed
+    pomodoroCount++;
+    completedPomodoros++;
+    save('pomodoroCount', pomodoroCount);
+    save('completedPomodoros', completedPomodoros);
+    updatePomodoroCounter();
+    
+    // Check if it's time for a long break
+    if (pomodoroCount >= 3) {
+      pBreak = true;
+      pSeconds = 25 * 60; // 25 minute long break
+      pomodoroCount = 0; // Reset counter
+      save('pomodoroCount', pomodoroCount);
+    } else {
+      pBreak = true;
+      pSeconds = 15 * 60; // 15 minute short break
+    }
+  } else { 
+    // Break completed
+    pBreak = false;
+    pSeconds = 45 * 60; // 45 minute focus session
+  }
+  
+  startPom(); 
+}
+
+function startPom(){ 
+  if(pRunning) return; 
+  pRunning=true; 
+  setMaxVolume(); 
+  $("#toneStart").play(); 
+  pTimer=setInterval(pomTick,1000); 
+}
+
+function pausePom(){ 
+  if(!pRunning) return; 
+  clearInterval(pTimer); 
+  pTimer=null; 
+  pRunning=false; 
+  setMaxVolume(); 
+  $("#tonePause").play(); 
+}
+
+function resetPom(){ 
+  clearInterval(pTimer); 
+  pTimer=null; 
+  pRunning=false; 
+  pBreak=false; 
+  pSeconds=45*60; 
+  renderPom(); 
+  setMaxVolume(); 
+  $("#toneReset").play(); 
+}
+
+// Mobile-compatible event listeners
+$("#pStart").addEventListener('click', startPom);
+$("#pStart").addEventListener('touchstart', startPom);
+$("#pPause").addEventListener('click', pausePom);
+$("#pPause").addEventListener('touchstart', pausePom);
+$("#pReset").addEventListener('click', resetPom);
+$("#pReset").addEventListener('touchstart', resetPom);
+
+renderPom();
+updatePomodoroCounter();
+
+/* ===== Sticky Notes ===== */
+$("#notes").value = load('notes','');
+$("#notes").addEventListener('input', ()=>save('notes',$("#notes").value));
+
+/* ===== Voice Input ===== */
+let recognition = null;
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.continuous = false;
+  recognition.lang = 'en-US';
+}
+
+function startVoiceInput(targetElement) {
+  if (!recognition) {
+    alert("Speech recognition is not supported in your browser.");
+    return;
+  }
+
+  const voiceBtn = targetElement === 'todo' ? $("#todoVoiceBtn") : $("#notesVoiceBtn");
+  voiceBtn.classList.add('listening');
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    if (targetElement === 'todo') {
+      $("#todoInput").value = transcript;
+    } else {
+      $("#notes").value += transcript + " ";
+      save('notes',$("#notes").value);
+    }
+    voiceBtn.classList.remove('listening');
+  };
+
+  recognition.onerror = function() {
+    voiceBtn.classList.remove('listening');
+  };
+
+  recognition.start();
+}
+
+$("#todoVoiceBtn").addEventListener('click', () => startVoiceInput('todo'));
+$("#notesVoiceBtn").addEventListener('click', () => startVoiceInput('notes'));
+
+/* ===== Study Alarms ===== */
+let alarms = load('alarms',[]);
+let activeAlarm = null;
+
+function playAlarm(url){ 
+  const t=$("#toneAlarm"); 
+  t.src=url; 
+  setMaxVolume(); 
+  t.loop = true;
+  t.play();
+  activeAlarm = t;
+}
+
+function stopAlarm() {
+  if (activeAlarm) {
+    activeAlarm.pause();
+    activeAlarm.currentTime = 0;
+    activeAlarm = null;
+  }
+  $("#alarmBanner").classList.add('hidden');
+}
+
+function showBanner(){ 
+  $("#alarmBanner").classList.remove('hidden');
+}
+
+function renderAlarms(){ 
+  const div=$("#alarms"); 
+  if(!div) return; 
+  div.innerHTML=''; 
+  
+  alarms.forEach((a,i)=>{
+    const alarmItem = document.createElement('div');
+    alarmItem.className = 'alarm-item';
+    
+    const alarmTime = document.createElement('span');
+    alarmTime.textContent = a;
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'x';
+    removeBtn.textContent = '✕';
+    removeBtn.addEventListener('click', () => {
+      alarms.splice(i, 1);
+      save('alarms', alarms);
+      renderAlarms();
+    });
+    
+    alarmItem.appendChild(alarmTime);
+    alarmItem.appendChild(removeBtn);
+    div.appendChild(alarmItem);
+  });
+}
+
+function addAlarmHandler() {
+  const t=$("#alarmTime").value;
+  if(t){ 
+    alarms.push(t); 
+    save('alarms',alarms); 
+    renderAlarms(); 
+  }
+}
+
+$("#addAlarm").addEventListener('click', addAlarmHandler);
+$("#addAlarm").addEventListener('touchstart', addAlarmHandler);
+
+// Add event listener to stop alarm when banner is clicked
+$("#alarmBanner .banner-close").addEventListener('click', stopAlarm);
+$("#alarmBanner .banner-close").addEventListener('touchstart', stopAlarm);
+
+setInterval(()=>{
+  const now=new Date(); 
+  const time=now.toTimeString().slice(0,5);
+  
+  alarms.forEach(a=>{ 
+    if(a===time && !activeAlarm){ 
+      playAlarm($("#alarmTone").value); 
+      showBanner(); 
+    } 
+  });
+},1000);
+renderAlarms();
+
+/* ===== To-Do List ===== */
+let todos = load('todos',[]);
+function renderTodos(){
+  const list=$("#todoList");
+  list.innerHTML='';
+  todos.forEach((t,i)=>{
+    const li=document.createElement('li'); li.className='item';
+    if(t.done) li.classList.add('done');
+    li.textContent=t.text;
+    
+    // Mobile-compatible event listeners for todo items
+    li.addEventListener('click', ()=>{ t.done=!t.done; save('todos',todos); renderTodos(); updateTodoScore(); });
+    li.addEventListener('touchstart', ()=>{ t.done=!t.done; save('todos',todos); renderTodos(); updateTodoScore(); });
+    
+    const xBtn=document.createElement('button'); xBtn.className='x'; xBtn.textContent='✕';
+    xBtn.addEventListener('click', (e)=>{ e.stopPropagation(); todos.splice(i,1); save('todos',todos); renderTodos(); updateTodoScore();});
+    xBtn.addEventListener('touchstart', (e)=>{ e.stopPropagation(); todos.splice(i,1); save('todos',todos); renderTodos(); updateTodoScore();});
+    
+    li.appendChild(xBtn);
+    list.appendChild(li);
+  });
+  updateTodoScore();
+}
+
+function updateTodoScore(){
+  const total=todos.length;
+  if(total===0){ $("#todoScore").textContent="Score: 0% – Bad"; return;}
+  const done=todos.filter(t=>t.done).length;
+  const perc=Math.round((done/total)*100);
+  let remark='';
+  if(perc<=30) remark='Bad';
+  else if(perc<=70) remark='Good';
+  else remark='Excellent';
+  $("#todoScore").textContent=`Score: ${perc}% – ${remark}`;
+}
+
+function addTodoHandler(){
+  const val=$("#todoInput").value.trim();
+  if(val){ todos.push({text:val,done:false}); save('todos',todos); $("#todoInput").value=''; renderTodos();}
+}
+
+$("#addTodo").addEventListener('click', addTodoHandler);
+$("#addTodo").addEventListener('touchstart', addTodoHandler);
+
+// Allow adding todos with Enter key
+$("#todoInput").addEventListener('keypress', (e)=>{
+  if(e.key === 'Enter') addTodoHandler();
+});
+
+renderTodos();
+
+/* ===== Scientific Calculator ===== */
+function appendToCalc(value) {
+  const display = $("#calcDisplay");
+  display.value += value;
+}
+
+function clearCalc() {
+  $("#calcDisplay").value = '';
+}
+
+function calcBackspace() {
+  const display = $("#calcDisplay");
+  display.value = display.value.slice(0, -1);
+}
+
+function calculateResult() {
+  const display = $("#calcDisplay");
+  try {
+    // Replace visual operators with JavaScript operators
+    let expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
+    display.value = eval(expression);
+  } catch (error) {
+    display.value = 'Error';
+    setTimeout(() => { display.value = ''; }, 1000);
+  }
+}
+
+function calculateSin() {
+  const display = $("#calcDisplay");
+  try {
+    const value = parseFloat(display.value);
+    display.value = Math.sin(value * Math.PI / 180); // Convert to radians
+  } catch (error) {
+    display.value = 'Error';
+    setTimeout(() => { display.value = ''; }, 1000);
+  }
+}
+
+function calculateCos() {
+  const display = $("#calcDisplay");
+  try {
+    const value = parseFloat(display.value);
+    display.value = Math.cos(value * Math.PI / 180); // Convert to radians
+  } catch (error) {
+    display.value = 'Error';
+    setTimeout(() => { display.value = ''; }, 1000);
+  }
+}
+
+function calculateTan() {
+  const display = $("#calcDisplay");
+  try {
+    const value = parseFloat(display.value);
+    display.value = Math.tan(value * Math.PI / 180); // Convert to radians
+  } catch (error) {
+    display.value = 'Error';
+    setTimeout(() => { display.value = ''; }, 1000);
+  }
+}
+
+/* ===== Syllabus Planner with tick/cross and percentage ===== */
+const syllabusData = {
+  "Chemistry":["Practicals","Chemical Equilibrium","Acids, Bases and Salts","Organic Chemistry","Hydrocarbons","Biochemistry","The Atmosphere","Water","Chemical Industries"],
+  "Physics":["Practicals","Simple Harmonic Motion and Waves","Sound","Geometrical Optics","Electrostatics","Current Electricity","Electromagnetism","Basic Electronics","Information and Communication Technology","Atomic and Nuclear Physics"],
+  "Maths":["Quadratic Equations","Theory of Quadratic Equations","Variations","Partial Fractions","Sets and Functions","Basic Statistics","Introduction to Trigonometry","Projection of a side of a Triangle","Chords of a Circle","Tangent to a Circle","Chords and Arcs","Angle in a segment of a circle.","Practical Geometry- Circles"],
+  "Computer / Biology":["Computer: Practicals","Computer: Introduction to Programming","Computer: User Interaction","Computer: Conditional Logic","Computer: Data and Repetition","Computer: Function","Biology: Practicals","Biology: Gaseous Exchange","Biology: Homeostasis","Biology: Coordination and Control","Biology: Support and Movement","Biology: Reproduction","Biology: Inheritance","Biology: Man and his Environment","Biology: Biotechnology","Biology: Pharmacology"],
+  "English":["Hazrat Muhammad (SAW), an Embodiment of Justice","Chinese New Year","Try Again","First Aid","The Rain","Television vs Newspapers","Little by little One Walks Far!","Peace","Selecting the right Career","A World without Books","Great Expectations","Population Growth and World Food Supplies","Faithfulness","Translations","Review (Unit 1 - 3)","Review (Unit 4 - 6)","Review (Unit 7 - 10)","Grammar (Sentences)","Grammar (Phases and Clause)","Grammar (Parts of Speech)","Grammar (Noun, Pronoun)","Grammar (Adjective, Verbs, Adverbs)","Grammar (Prepositions, Interjections, Articles)","Grammar (Translation, Sentences)","Grammar (Active & Passive)","Story/Essay/Letter Writing"],
+  "Urdu":["حمد","نعت ( نظم )","مرزا محمد سعید","نظریہ پاکستان","پرستان کی شہزادی","اردو ادب میں عید الفطر","مجھے میرے دوستو ں سے بچا و ٔ(سبق )","ملمّع (سبق )","چغل خو ر(سبق )","نا م دیو ما لی (سبق )","علی بخش","استنبول","خطوط غالب","خطوط رشید احمد صدیقی","میدان کربلا میں گرمی کی شدت( نظم )","فا طمہ بنت عبداللہ (نظم )-","کسان","جیوے جیوے پاکستان","اُونٹ کی شادی","مال گودام روڈ","حسرت مو ہا نی( غزل)-","جگر مراد آبا دی (غزل )","فراق گورکھ پوری","ادا جعفری","مضمون","تفہیم عبارت","گرامر"],
+  "S.S.T":["تحریکِ پاکستان اور پاکستان کا قیام","تاریخِ پاکستان (1971 تا حال)","پاکستان اور عالمی امور","زمین اور ماحول","آبادی، معاشرہ اور پاکستان کی ثقافت","پاکستان کی معاشی ترقی","خواتین کو بااختیار بنانا"],
+  "Tarjuma-tul-Quran":["سُورَةُ الأنعام","سُورَةُ الأعراف","سُورَةُ يُونُس","سُورَةُ هُود","سُورَةُ الرعد","سُورَةُ إِبْرَاهِيم","سُورَةُ الحِجْر","سُورَةُ النحل","سُورَةُ الإسراء","سُورَةُ الكهف","سُورَةُ المؤمنون","سُورَةُ الزمر","سُورَةُ غافر","سُورَةُ فصلت","سُورَةُ الشورى"]
+};
+let syllabusState = load('syllabusState',{});
+function renderSyllabus(){
+  const div=$("#syllabus");
+  div.innerHTML='';
+  Object.keys(syllabusData).forEach(subject=>{
+    const det = document.createElement('details');
+    const sum = document.createElement('summary');
+    
+    const total = syllabusData[subject].length;
+    const doneCount = syllabusState[subject]?.length || 0;
+    const perc = Math.round((doneCount/total)*100);
+    
+    // Create subject header with progress circle
+    const subjectHeader = document.createElement('div');
+    subjectHeader.className = 'subject-header';
+    
+    const subjectTitle = document.createElement('span');
+    subjectTitle.textContent = subject;
+    
+    const progressCircle = document.createElement('div');
+    progressCircle.className = 'progress-circle';
+    progressCircle.textContent = `${perc}%`;
+    progressCircle.style.color = perc === 100 ? '#16a34a' : '#64748b';
+    progressCircle.style.borderColor = perc === 100 ? '#16a34a' : '#64748b';
+    
+    subjectHeader.appendChild(subjectTitle);
+    subjectHeader.appendChild(progressCircle);
+    sum.appendChild(subjectHeader);
+    det.appendChild(sum);
+
+    const ul = document.createElement('ul'); 
+    ul.className = 'chapters';
+
+    syllabusData[subject].forEach(chapter=>{
+      const li=document.createElement('li'); 
+      li.className='syllabus-item';
+      const done = syllabusState[subject]?.includes(chapter);
+      if(done) li.classList.add('done');
+      
+      const statusIcon = document.createElement('span');
+      statusIcon.textContent = done ? '✓ ' : '✕ ';
+      statusIcon.style.fontWeight = 'bold';
+      statusIcon.style.color = done ? '#16a34a' : '#ef4444';
+      
+      const chapterText = document.createElement('span');
+      chapterText.textContent = chapter;
+      
+      li.appendChild(statusIcon);
+      li.appendChild(chapterText);
+      
+      // Mobile-compatible event listeners
+      li.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        syllabusState[subject] = syllabusState[subject] || [];
+        if(syllabusState[subject].includes(chapter)){
+          syllabusState[subject] = syllabusState[subject].filter(x => x !== chapter);
+        } else {
+          syllabusState[subject].push(chapter);
+        }
+        save('syllabusState',syllabusState);
+        renderSyllabus();
+      });
+      
+      li.addEventListener('touchstart', (e)=>{
+        e.stopPropagation();
+        syllabusState[subject] = syllabusState[subject] || [];
+        if(syllabusState[subject].includes(chapter)){
+          syllabusState[subject] = syllabusState[subject].filter(x => x !== chapter);
+        } else {
+          syllabusState[subject].push(chapter);
+        }
+        save('syllabusState',syllabusState);
+        renderSyllabus();
+      });
+      
+      ul.appendChild(li);
+    });
+
+    // Add reset button for this subject
+    const resetContainer = document.createElement('div');
+    resetContainer.className = 'subject-reset';
+    
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'btn reset small';
+    resetBtn.textContent = 'Reset Progress';
+    resetBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      syllabusState[subject] = [];
+      save('syllabusState',syllabusState);
+      renderSyllabus();
+    });
+    
+    resetBtn.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+      syllabusState[subject] = [];
+      save('syllabusState',syllabusState);
+      renderSyllabus();
+    });
+    
+    resetContainer.appendChild(resetBtn);
+    det.appendChild(resetContainer);
+    det.appendChild(ul);
+    div.appendChild(det);
+  });
+}
+renderSyllabus();
+</script>
+</body>
+</html>
